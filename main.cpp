@@ -160,12 +160,12 @@ int main() {
     reg.setMinClusterSize (1000);
     reg.setMaxClusterSize (1000000);
     reg.setSearchMethod (tree);
-    reg.setNumberOfNeighbours (30);
+    reg.setNumberOfNeighbours (100); //sometime will fail
     reg.setInputCloud (cloud);
     //reg.setIndices (indices);
     reg.setInputNormals (normals);
     reg.setSmoothnessThreshold (3.0 / 180.0 * M_PI);
-    reg.setCurvatureThreshold (1.0);
+    reg.setCurvatureThreshold (2.0);
 
     std::vector <pcl::PointIndices> clusters;
     reg.extract (clusters);
