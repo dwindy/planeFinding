@@ -34,7 +34,8 @@ public:
     int count;
     vector<int> pointList;
     int mergeID;
-    Plane(double Ain, double Bin, double Cin, double Din) : A(Ain), B(Bin), C(Cin), D(Din) {mergeID=-1;count=-1;};
+    Plane(double Ain, double Bin, double Cin, double Din, Point centreP)
+            : A(Ain), B(Bin), C(Cin), D(Din) { mergeID=-1;count=-1;};
 };
 
 class boundingbox
