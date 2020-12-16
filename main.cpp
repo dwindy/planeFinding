@@ -97,7 +97,7 @@ void calcboundbox(const std::vector<Point> &input, boundingbox &box) {
     }
 }
 
-void HoughTransform(const vector<Point> &input, double &A, double &B, double &C, double &D, Plane &foundPlane) {
+void HoughTransform(const vector<Point> &input, double &A, double &B, double &C, double &D, Plane &foundPlane, int mode) {
     int n = input.size();
     if (n < 3)
         return;
@@ -106,6 +106,15 @@ void HoughTransform(const vector<Point> &input, double &A, double &B, double &C,
     double phi_start = 0, phi_end = PI;
     //double phi_start = 0.25*PI, phi_end = 0.75*PI;
     double anglestep = PI / 90, disstep = 0.05;
+    //floor
+    if(mode ==1)
+    {
+        theta_start = PI / 2 - 0.2; theta_end = PI / 2 + 0.2;
+    }
+    if(mode ==2)
+    {
+        phi_start = PI/2-0.2, phi_end = PI/2+0.2;
+    }
 
     boundingbox box;
     calcboundbox(input, box);
@@ -193,6 +202,7 @@ void HoughTransform(const vector<Point> &input, double &A, double &B, double &C,
     foundPlane.theta = theta;
     foundPlane.phi = phi;
     foundPlane.dis = d;
+    foundPlane.count = maxcount;
     //释放cube
     for (int i = 0; i < thetas; ++i) {
         int **row = cube[i];
@@ -332,11 +342,27 @@ int main() {
             double A, B, C, D;
             Plane thisPlane(Point(0, 0, 0));
             double startTime = clock();
-            HoughTransform(thisCluster, A, B, C, D, thisPlane);
+            HoughTransform(thisCluster, A, B, C, D, thisPlane,1);
+            Plane thisPlane2(Point(0, 0, 0));
+            HoughTransform(thisCluster, A, B, C, D, thisPlane2,2);
             double endTime = clock();
             double timeUsed = double(endTime - startTime) / CLOCKS_PER_SEC;
-            cout<<"Hough Transform time cosumed : "<<timeUsed<<endl;
-            planes.push_back(thisPlane);
+            cout<<"Hough Transform x 2 time consumed : "<<timeUsed<<endl;
+            if(thisPlane.count>thisPlane2.count)
+                planes.push_back(thisPlane);
+                else
+                planes.push_back(thisPlane2);
+            ///no limit case
+            //startTime = clock();
+//            Plane thisPlane3(Point(0, 0, 0));
+//            HoughTransform(thisCluster, A, B, C, D, thisPlane3, 3);
+//            endTime = clock();
+//            timeUsed = double(endTime - startTime) / CLOCKS_PER_SEC;
+//            cout << "Hough Transform Full time cosumed : " << timeUsed << endl;
+//            cout << "plane 1 contains " << thisPlane.count << " plane 2 " << thisPlane2.count << " plane 3 "
+//                 << thisPlane3.count << endl;
+
+            //planes.push_back(thisPlane3);
         }
 
         ///show
