@@ -1,5 +1,7 @@
 /*
  * This was Hough transform algorithm but works bad
+ * only good for finding 1 plane.
+ * time consumes 20 secs.
  */
 #include <iostream>
 //#include <fstream>
